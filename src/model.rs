@@ -13,9 +13,22 @@ lazy_static! {
     validate(
         len_char_min = 5,
         len_char_max = 20,
-        regex = EMAIL_REGEX,
+        regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
     ),
-    derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash),
+    derive(
+        Serialize,
+        Deserialize,
+        Display,
+        Debug,
+        Clone,
+        AsRef,
+        Deref,
+        PartialEq,
+        Eq,
+        PartialOrd,
+        Ord,
+        Hash
+    ),
 )]
 pub struct EmailAddress(String);
 
@@ -24,7 +37,7 @@ pub struct EmailAddress(String);
     validate(
         len_char_min = 36,
         len_char_max = 36,
-        regex = UUID_REGEX,
+        regex = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
     ),
     derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash),
 )]
@@ -74,6 +87,19 @@ impl User {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_age() {
+        let user_age = Age::new(32).unwrap();
+        println!("{:?}", user_age)
+    }
+
+    #[test]
+    fn test_email() {
+        let email = EmailAddress::new("deMo@example.com").unwrap();
+        println!("{}", email);
+        println!("uppercase: {}", email.to_uppercase());
+    }
 
     #[test]
     fn test_user() {
